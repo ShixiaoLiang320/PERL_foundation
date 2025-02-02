@@ -27,16 +27,17 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 file_path = os.path.join(
     current_dir,
-    "../Ultra_AV/Longitudinal Trajectory Dataset/OpenACC/step3_ASta.csv"
+    "../data/step3_ASta.csv"
 )
 
 input_steps = 30
 output_steps = 10
 output_features = 1
 batch_size = 32
-max_epochs = 200
+max_epochs = 300
+mse_threshold = 0.1
 
-data_processor = DataProcessor(file_path, input_steps, output_steps)
+data_processor = DataProcessor(file_path, input_steps, output_steps, output_features)
 
 # 获取数据集
 train_dataset = data_processor.get_tf_dataset("train", batch_size=batch_size)
@@ -44,8 +45,9 @@ val_dataset = data_processor.get_tf_dataset("val", batch_size=batch_size)
 test_dataset = data_processor.get_tf_dataset("test", batch_size=batch_size)
 
 # 测试不同数据规模
-data_sizes = np.arange(50, 1001, 50)
-#data_sizes = [50]
+#data_sizes = np.arange(50, 1001, 50)
+data_sizes = np.arange(40, 401, 20)
+#data_sizes = [50, 100, 200]
 results = []  # 存储实验结果
 
 for data_size in data_sizes:
@@ -137,7 +139,7 @@ for data_size in data_sizes:
         "mse": mse
     })
 
-output_csv = os.path.join(current_dir, f"lstm_experiment_results_multi.csv")
+output_csv = os.path.join(current_dir, f"lstm_multi_test.csv")
 
 def read_existing_results(file_path):
     if os.path.exists(file_path):

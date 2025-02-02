@@ -53,25 +53,28 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 file_path = os.path.join(
     current_dir,
-    "../Ultra_AV/Longitudinal Trajectory Dataset/OpenACC/step3_ASta.csv"
+    "../data/step3_ASta.csv"
 )
 
 input_steps = 30
-output_steps = 5
+output_steps = 10
 output_features = 1
 batch_size = 32
-max_epochs = 200
+max_epochs = 300
+mse_threshold = 0.1
 
-data_processor = DataProcessor(file_path, input_steps, output_steps)
+data_processor = DataProcessor(file_path, input_steps, output_steps, output_features)
 
 # 测试不同数据规模
-#data_sizes = np.arange(50, 1001, 50)
-data_sizes = [50, 100, 200]
+#data_sizes = np.arange(40, 201, 10)
+data_sizes = np.arange(40, 401, 20)
+
+#data_sizes = [50, 100, 200]
 results = []  # 存储实验结果
 
 for data_size in data_sizes:
-    train_size = int(data_size * 0.8)  # training set
-    val_size = int(data_size * 0.1)  # validation set
+    train_size = int(data_size * 0.6)  # training set
+    val_size = int(data_size * 0.2)  # validation set
     test_size = data_size - train_size - val_size  # test set
 
     X_train_subset = data_processor.X_train[:train_size]
@@ -109,43 +112,15 @@ for data_size in data_sizes:
     ahat_idm_train_ForPhy = IDM(idm_params, Speed_FAV_train_ForPhy ,Delta_v_train_ForPhy, Spatial_Gap_train_ForPhy)
     
     ahat_idm_val_ForPhy = IDM(idm_params, Speed_FAV_val_ForPhy, Delta_v_val_ForPhy, Spatial_Gap_val_ForPhy)
-    print(y_test_subset[:, 0, 3], ahat_idm_test[:, -1])
-    
-    print(ahat_idm_train_ForPhy.shape)
-    print(ahat_idm_val_ForPhy)
-    #print(ahat_idm_train.shape, ahat_idm_val.shape, ahat_idm_test.shape)
-    print(y_train_subset.shape, y_val_subset.shape, y_test_subset.shape)
-    #print(X_train_subset.shape, X_val_subset.shape, X_test_subset.shape)
-    
+
     residual_train_X = y_train_subset[:, 0, 3] - ahat_idm_train[:, -1]
     residual_train_y = y_train_subset[:, 1:, 3] - ahat_idm_train_ForPhy[:, :-1]
     residual_train = np.hstack((residual_train_X[:, np.newaxis], residual_train_y))
-    print(residual_train_y - y_train_subset[:, 1:, 3])
     residual_val_X = y_val_subset[:, 0, 3] - ahat_idm_val[:, -1]
     residual_val_y = y_val_subset[:, 1:, 3] - ahat_idm_val_ForPhy[:, :-1]
     residual_val = np.hstack((residual_val_X[:, np.newaxis], residual_val_y))
     
-    print("Residual train (first 10):")
-    print(residual_train[:10])
-    print("Y train subset (dimension 3, first 10):")
-    print(y_train_subset[:10, :, 3])
-    print("phy")
-    print(ahat_idm_train_ForPhy[:, :-1])
-    print("""""")
-    print("MSE for IDM")
-    mse_phy = mean_squared_error(y_test_subset[:, 0, 3], ahat_idm_test[:, -1])
-    print(y_test_subset[:, 0, 3], ahat_idm_test[:, -1])
-    print(mse_phy)
-    print("""""")
 
-    #print(X_train_subset.shape)
-    #print(residual_train.shape)
-    #print(y_train_subset[0])
-    #print(ahat_idm_train[0])
-    #print(residual_val.shape)
-    #print(X_val_subset.shape)
-
-'''
     # training
     residual_model = build_lstm_model(X_train_subset.shape[1], X_train_subset.shape[2], output_steps, output_features)
 
@@ -233,7 +208,7 @@ for data_size in data_sizes:
     
 
 # 将结果保存到 CSV 文件
-output_csv = os.path.join(current_dir, f"perl_experiment_results_multi.csv")
+output_csv = os.path.join(current_dir, f"perl_multi_test.csv")
 
 # 如果文件已存在，读取现有内容
 def read_existing_results(file_path):
@@ -253,7 +228,5 @@ with open(output_csv, mode='w+', newline='') as file:
     writer.writerows(existing_results)
 
 print(f"Results saved to {output_csv}")
-
-'''    
 
 

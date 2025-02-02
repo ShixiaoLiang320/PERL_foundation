@@ -1,0 +1,6 @@
+Monte Carlo Optimization Results
+===============================
+Best Parameters (vf, A, b, s0, T): (23.058, 0.572, 2.601, 1.605, 1.165)
+
+Best MSE: 0.047690
+

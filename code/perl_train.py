@@ -10,7 +10,6 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 from data_filter import DataProcessor
 
 def load_best_params(file_path):
-    """从文本文件中读取最优的 IDM 参数"""
     with open(file_path, 'r') as file:
         lines = file.readlines()
     
@@ -18,7 +17,7 @@ def load_best_params(file_path):
         if "Best Parameters" in line:
             params_str = line.split(":")[1].strip()
             params = tuple(map(float, params_str.strip("()").split(", ")))
-            return params
+            return params 
 
     raise ValueError("Best Parameters not found in the file.")
 
@@ -43,7 +42,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 file_path = os.path.join(
     current_dir,
-    "../Ultra_AV/Longitudinal Trajectory Dataset/OpenACC/step3_ASta.csv"
+    "../data/step3_ASta.csv"
 )
 
 input_steps = 10
@@ -51,7 +50,7 @@ output_steps = 1
 output_features = 1
 batch_size = 32
 max_epochs = 300
-mse_threshold = 0.1
+mse_threshold = 0.05
 
 data_processor = DataProcessor(file_path, input_steps, output_steps, mse_threshold)
 
@@ -94,7 +93,7 @@ for data_size in data_sizes:
     Spatial_Gap_test = X_test_subset[:, :, 4] 
     Delta_v_test = Speed_LV_test - Speed_FAV_test
 
-    best_params_file = "calibration_results_OpenACC_a.txt"
+    best_params_file = "calibration_results_OpenACC_ASta.txt"
 
     # IDM results
     try:
@@ -210,7 +209,7 @@ for data_size in data_sizes:
     })
 
 # 将结果保存到 CSV 文件
-output_csv = os.path.join(current_dir, f"perl_200_128_10.csv")
+output_csv =  os.path.join(current_dir, "results", "perl", "perl_200_test.csv")
 
 # 如果文件已存在，读取现有内容
 def read_existing_results(file_path):

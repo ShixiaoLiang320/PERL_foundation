@@ -11,13 +11,14 @@ def run_scripts(n):
         print("Please provide a valid positive integer as input.")
         return
 
-    scripts = ["lstm_multi.py", "perl_multi.py"]  
+    current_dir = os.path.dirname(os.path.abspath(__file__))
 
-    # List of script filenames with their absolute paths
-    script_dir = "/Users/shixiaoliang/Library/Mobile Documents/com~apple~CloudDocs/Documents/PERL_foundation/code"
     scripts = [
-        os.path.join(script_dir, "lstm_train.py"),
-        os.path.join(script_dir, "perl_train.py")
+        os.path.join(current_dir, "lstm_train.py"),
+        os.path.join(current_dir, "perl_train.py")
+        #os.path.join(current_dir, "lstm_multi.py"),
+        #os.path.join(current_dir, "perl_multi.py")
+
     ]
     for i in range(n):
         print(f"\n--- Running iteration {i+1}/{n} ---\n")
@@ -35,3 +36,4 @@ if __name__ == "__main__":
     else:
         n = input("Enter the number of iterations: ")
         run_scripts(n)
+

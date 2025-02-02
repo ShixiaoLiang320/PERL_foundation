@@ -29,7 +29,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 file_path = os.path.join(
     current_dir,
-    "../Ultra_AV/Longitudinal Trajectory Dataset/OpenACC/step3_ASta.csv"
+    "../data/step3_ASta.csv"
 )
 
 input_steps = 10
@@ -84,7 +84,7 @@ for data_size in data_sizes:
     )
 
     val_loss_window = []
-    patience_increase = 5  # 连续验证损失上升的最大次数
+    patience_increase = 10  # 连续验证损失上升的最大次数
     consecutive_increase = 0
 
     training_loss = []
@@ -139,7 +139,7 @@ for data_size in data_sizes:
     })
 
 # 将结果保存到 CSV 文件
-output_csv = os.path.join(current_dir, f"lstm_200_128_10.csv")
+output_csv = os.path.join(current_dir, "results", "lstm", "lstm_200_test.csv")
 
 # 如果文件已存在，读取现有内容
 def read_existing_results(file_path):

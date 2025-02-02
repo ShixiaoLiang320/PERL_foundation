@@ -14,19 +14,37 @@ plt.rcParams.update({
     'figure.titlesize': 24  # Overall figure title font size
 })
 
-# Data Input
-#LSTM = "/Users/shixiaoliang/Library/Mobile Documents/com~apple~CloudDocs/Documents/PERL_foundation/code/results/lstm/200_32_30.csv"
-#PERL = "/Users/shixiaoliang/Library/Mobile Documents/com~apple~CloudDocs/Documents/PERL_foundation/code/results/perl/200_32_30.csv"
-#test
-LSTM = "/Users/shixiaoliang/Library/Mobile Documents/com~apple~CloudDocs/Documents/PERL_foundation/code/lstm_200_128_10.csv"
-PERL = "/Users/shixiaoliang/Library/Mobile Documents/com~apple~CloudDocs/Documents/PERL_foundation/code/perl_200_128_10.csv"
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+figures_dir = os.path.join(current_dir, "results", "figures")
 
-#LSTM = "/Users/shixiaoliang/Library/Mobile Documents/com~apple~CloudDocs/Documents/PERL_foundation/code/lstm_output.csv"
-#PERL = "/Users/shixiaoliang/Library/Mobile Documents/com~apple~CloudDocs/Documents/PERL_foundation/code/perl_output.csv"
+# Ensure the results/figures directory exists
+os.makedirs(figures_dir, exist_ok=True)
 
+# File paths
+LSTM = os.path.join(current_dir, "results", "lstm", "lstm_200_32_10.csv")
+PERL = os.path.join(current_dir, "results", "perl", "perl_200_32_10.csv")
+
+# Extract common part from filenames
+lstm_name = os.path.basename(LSTM).replace("lstm_", "").replace(".csv", "")
+perl_name = os.path.basename(PERL).replace("perl_", "").replace(".csv", "")
+
+if lstm_name == perl_name:
+    file_prefix = lstm_name
+else:
+    file_prefix = "unknown"
+    
+
+
+# Load data
 data_1 = pd.read_csv(LSTM)
 data_2 = pd.read_csv(PERL)
 
+filtered = list(range(20, 201, 20))
+
+# 筛选 data_1 和 data_2 中 data_size 在 allowed_values 列表内的行
+data_1 = data_1[data_1['data_size'].isin(filtered)]
+data_2 = data_2[data_2['data_size'].isin(filtered)]
 # Filter data
 #data_1 = data_1[(data_1['data_size'] < 101) & (data_1['data_size'] > 49)]
 #data_2 = data_2[(data_2['data_size'] < 101) & (data_2['data_size'] > 49)]
@@ -69,18 +87,17 @@ plt.fill_between(data_sizes_2,
                  mean_values_2 + confidence_interval_2, 
                  color='red', alpha=0.2, label='PERL 99% CI')
 
-
 # Using log scale
-#plt.xscale('log')
-#plt.yscale('log')
+plt.xscale('log')
+plt.yscale('log')
 
 plt.xlabel('Training data size')
 plt.ylabel('$MSE^a_{test}$ ($\mathrm{m}^2/\mathrm{s}^4$)') 
-#plt.title('MSE vs Data Size with Confidence Intervals')
 plt.legend()
 plt.grid(True)
-plt.show()
 
+# Save the figure using extracted prefix
+save_path = os.path.join(figures_dir, f"datasize_log.png")
+plt.savefig(save_path, bbox_inches='tight')
 
-
-
+print(f"Figure saved to {save_path}")

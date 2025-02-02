@@ -22,7 +22,7 @@ def build_lstm_model(time_steps, features, output_features):
 def build_lstm_model(time_steps, features, output_steps, output_features):
     model = Sequential([
         Input(shape=(time_steps, features)),  
-        LSTM(128, return_sequences=False),    
+        LSTM(16, return_sequences=False),    
         #Dropout(0.3),
         Dense(output_steps * output_features, activation='linear'),  
         #Dense(output_features, activation='linear')  

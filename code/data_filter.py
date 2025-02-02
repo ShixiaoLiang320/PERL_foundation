@@ -20,7 +20,6 @@ class DataProcessor:
         self.X_train, self.X_val, self.X_test, self.y_train, self.y_val, self.y_test = self.split_data()
 
     def load_best_params(self, file_path):
-        """从文本文件中读取最优的 IDM 参数"""
         with open(file_path, 'r') as file:
             lines = file.readlines()
         for line in lines:
@@ -38,7 +37,6 @@ class DataProcessor:
         return data[np.abs(data['Acc_FAV']) >= threshold]
 
     def preprocess_data(self):
-        """根据输入输出步长将数据分组，并筛选满足条件的样本"""
         samples_X, samples_y = [], []
         current_trajectory = None
         tra_data = []
@@ -70,7 +68,6 @@ class DataProcessor:
         return np.array(samples_X), np.array(samples_y)
 
     def is_sample_valid(self, input_data, output_data, idm_params):
-        """判断样本是否满足 MSE 阈值条件"""
         Speed_LV = input_data[-1, 0]
         Speed_FAV = input_data[-1, 2]
         Spatial_Gap = input_data[-1, 4]
@@ -84,7 +81,6 @@ class DataProcessor:
         return mse < self.mse_threshold
 
     def split_data(self):
-        """将数据集分割为训练集、验证集和测试集"""
         total_samples = len(self.X)
         train_size = int(total_samples * 0.7)
         val_size = int(total_samples * 0.15)
