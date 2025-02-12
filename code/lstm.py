@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Input, LSTM, Dense, Dropout, Conv1D, MaxPooling1D,Activation
+from tensorflow.keras.regularizers import l2
 
 
 '''
@@ -22,15 +23,16 @@ def build_lstm_model(time_steps, features, output_features):
 def build_lstm_model(time_steps, features, output_steps, output_features):
     model = Sequential([
         Input(shape=(time_steps, features)),  
-        LSTM(16, return_sequences=False),    
-        #Dropout(0.3),
+        LSTM(32, return_sequences=False, kernel_regularizer=l2(0.01)),    
+        Dropout(0.2),
         Dense(output_steps * output_features, activation='linear'),  
         #Dense(output_features, activation='linear')  
     ])
 
-    optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3, epsilon=1e-6)
     model.compile(optimizer=optimizer, loss='mse', metrics=['mae'])
-
+    #optimizer = tf.keras.optimizers.SGD(learning_rate=1e-2, momentum=0.9)
+    #model.compile(loss='mse', optimizer=optimizer, metrics=['mae'])
     return model
 
 '''

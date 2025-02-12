@@ -48,7 +48,7 @@ test_dataset = data_processor.get_tf_dataset("test", batch_size=batch_size)
 
 # 测试不同数据规模
 data_sizes = np.arange(40, 201, 10)
-#data_sizes = [50]
+data_sizes = [200]
 results = []  # 存储实验结果
 
 for data_size in data_sizes:

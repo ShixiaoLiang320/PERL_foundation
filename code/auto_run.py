@@ -14,8 +14,8 @@ def run_scripts(n):
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
     scripts = [
-        os.path.join(current_dir, "lstm_train.py"),
-        os.path.join(current_dir, "perl_train.py")
+        os.path.join(current_dir, "lstm_convergence_fix.py"),
+        os.path.join(current_dir, "perl_convergence_fix.py")
         #os.path.join(current_dir, "lstm_multi.py"),
         #os.path.join(current_dir, "perl_multi.py")
 
@@ -29,11 +29,5 @@ def run_scripts(n):
             except Exception as e:
                 print(f"Error while running {script}: {e}")
 
-
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        run_scripts(sys.argv[1])
-    else:
-        n = input("Enter the number of iterations: ")
-        run_scripts(n)
+run_scripts(1)
 
