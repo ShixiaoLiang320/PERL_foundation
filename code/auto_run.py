@@ -32,5 +32,5 @@ def run_scripts(n):
             except Exception as e:
                 print(f"Error while running {script}: {e}")
 
-run_scripts(6)
+run_scripts(10)
 
