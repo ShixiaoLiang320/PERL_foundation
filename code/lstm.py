@@ -4,20 +4,38 @@ from tensorflow.keras.layers import Input, LSTM, Dense, Dropout, Conv1D, MaxPool
 from tensorflow.keras.regularizers import l2
 
 
+
+
+def build_lstm_model(time_steps, features, output_features, lstm_units):
+    model = Sequential([
+        Input(shape=(time_steps, features)),  
+        LSTM(lstm_units, return_sequences=False, kernel_regularizer=l2(0.01)),
+        Dropout(0.3),
+        Dense(output_features, activation='linear')  
+    ])
+    
+    optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+    model.compile(optimizer=optimizer, loss='mse', metrics=['mae'])
+
+    return model
+
 '''
 
 def build_lstm_model(time_steps, features, output_features):
     model = Sequential([
         Input(shape=(time_steps, features)),  
-        LSTM(128, return_sequences=False),
+        LSTM(16, return_sequences=False),
         #Dropout(0.3),
         Dense(output_features, activation='linear')  
     ])
+    
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
-
     model.compile(optimizer=optimizer, loss='mse', metrics=['mae'])
 
     return model
+'''
+
+    
 '''
 
 def build_lstm_model(time_steps, features, output_steps, output_features):
@@ -34,7 +52,7 @@ def build_lstm_model(time_steps, features, output_steps, output_features):
     #optimizer = tf.keras.optimizers.SGD(learning_rate=1e-2, momentum=0.9)
     #model.compile(loss='mse', optimizer=optimizer, metrics=['mae'])
     return model
-
+'''
 '''
 def build_lstm_complex_model(input_shape, forward, layer1, layer2):
     model = Sequential()

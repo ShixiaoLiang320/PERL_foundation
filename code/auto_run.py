@@ -14,8 +14,11 @@ def run_scripts(n):
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
     scripts = [
-        os.path.join(current_dir, "lstm_convergence_fix.py"),
-        os.path.join(current_dir, "perl_convergence_fix.py")
+        os.path.join(current_dir, "lstm_paras.py"),
+        os.path.join(current_dir, "perl_paras.py")
+        
+        #os.path.join(current_dir, "lstm_convergence_fix.py"),
+        #os.path.join(current_dir, "perl_convergence_fix.py")
         #os.path.join(current_dir, "lstm_multi.py"),
         #os.path.join(current_dir, "perl_multi.py")
 

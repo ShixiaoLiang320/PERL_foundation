@@ -8,22 +8,6 @@ import csv
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from data_filter import DataProcessor
 
-def extract_subset(dataset, total_samples):
-
-    inputs, labels = [], []
-    for batch in dataset.as_numpy_iterator():
-        batch_inputs, batch_labels = batch
-        inputs.append(batch_inputs)
-        labels.append(batch_labels)
-        
-        # 检查是否已满足所需的样本数量
-        if len(np.concatenate(inputs)) >= total_samples:
-            break
-
-    # 合并所有批次数据
-    inputs = np.concatenate(inputs)[:total_samples]
-    labels = np.concatenate(labels)[:total_samples]
-    return inputs, labels
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 

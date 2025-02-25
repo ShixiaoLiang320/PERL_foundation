@@ -40,13 +40,13 @@ plt.plot(epochs, arch1_mean, label="LSTM", color='blue', linestyle='-', marker='
 plt.plot(epochs, arch2_mean, label="PERL", color='red', linestyle='--', marker='s')
 
 # 添加置信区间 (95% 置信区间)
-plt.fill_between(epochs, arch1_mean - 1.96 * (arch1_std / np.sqrt(arch1_grouped.count())),
-                 arch1_mean + 1.96 * (arch1_std / np.sqrt(arch1_grouped.count())), 
-                 color='blue', alpha=0.2, label='LSTM 95% CI')
+plt.fill_between(epochs, arch1_mean - 1.645 * (arch1_std / np.sqrt(arch1_grouped.count())),
+                 arch1_mean + 1.645 * (arch1_std / np.sqrt(arch1_grouped.count())), 
+                 color='blue', alpha=0.2, label='LSTM 90% CI')
 
-plt.fill_between(epochs, arch2_mean - 1.96 * (arch2_std / np.sqrt(arch2_grouped.count())),
-                 arch2_mean + 1.96 * (arch2_std / np.sqrt(arch2_grouped.count())), 
-                 color='red', alpha=0.2, label='PERL 95% CI')
+plt.fill_between(epochs, arch2_mean - 1.645 * (arch2_std / np.sqrt(arch2_grouped.count())),
+                 arch2_mean + 1.645 * (arch2_std / np.sqrt(arch2_grouped.count())), 
+                 color='red', alpha=0.2, label='PERL 90% CI')
 
 plt.xlabel("Epochs")
 plt.ylabel("Validation Loss")
